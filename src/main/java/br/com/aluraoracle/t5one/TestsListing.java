@@ -1,11 +1,10 @@
 package br.com.aluraoracle.t5one;
 
 import java.sql.*;
-import java.util.List;
 
 public class TestsListing {
     public static void main(String[] args) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/online_shopping?user=root", "root", "B@rbudo8594");
+        Connection connection = ConnectionFactory.triggersConnection();
         Statement statement = connection.createStatement();
         boolean result = statement.execute("select id, name, description from tbproduct");
         System.out.println(result);
