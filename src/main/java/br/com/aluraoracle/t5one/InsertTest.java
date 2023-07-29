@@ -21,5 +21,6 @@ public class InsertTest {
             int id = resultSet.getInt(1);
             System.out.println("ID criado: " + id);
         }
+        connection.close();
     }
 }

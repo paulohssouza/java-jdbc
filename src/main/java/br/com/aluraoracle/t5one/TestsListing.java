@@ -5,8 +5,9 @@ import java.sql.*;
 public class TestsListing {
     public static void main(String[] args) throws SQLException {
         Connection connection = ConnectionFactory.triggersConnection();
-        Statement statement = connection.createStatement();
-        boolean result = statement.execute("select id, name, description from tbproduct");
+        PreparedStatement statement = connection.prepareStatement(
+                "select id, name, description from tbproduct");
+        boolean result = statement.execute();
         System.out.println(result);
         ResultSet resultSet = statement.getResultSet();
         while(resultSet.next()) {
