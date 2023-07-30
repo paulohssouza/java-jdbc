@@ -4,7 +4,8 @@ import java.sql.*;
 
 public class InsertionWithParameter {
     public static void main(String[] args) throws SQLException {
-        try(Connection connection = ConnectionFactory.triggersConnection()) {
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        try(Connection connection = connectionFactory.triggersConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement statement = connection.prepareStatement("insert into tbproduct" +
                     "(name, description) values(?, ?)", Statement.RETURN_GENERATED_KEYS)){

@@ -7,7 +7,8 @@ import java.sql.Statement;
 
 public class DeleteTest {
     public static void main(String[] args) throws SQLException {
-        Connection connection = ConnectionFactory.triggersConnection();
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        Connection connection = connectionFactory.triggersConnection();
         PreparedStatement statement = connection.prepareStatement(
                 "delete from tbproduct where id > ?");
         statement.setInt(1, 2);

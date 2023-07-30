@@ -4,7 +4,8 @@ import java.sql.*;
 
 public class TestsListing {
     public static void main(String[] args) throws SQLException {
-        Connection connection = ConnectionFactory.triggersConnection();
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        Connection connection = connectionFactory.triggersConnection();
         PreparedStatement statement = connection.prepareStatement(
                 "select id, name, description from tbproduct");
         boolean result = statement.execute();

@@ -1,11 +1,25 @@
 package br.com.aluraoracle.t5one;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-    public static Connection triggersConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/online_shopping?user=root", "root", "B@rbudo8594");
+
+    public DataSource dataSource;
+
+    public ConnectionFactory() {
+        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
+        comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/online_shopping?user=root");
+        comboPooledDataSource.setUser("root");
+        comboPooledDataSource.setPassword("B@rbudo8594");
+        comboPooledDataSource.setMaxPoolSize(15);
+        this.dataSource = comboPooledDataSource;
+    }
+    public Connection triggersConnection() throws SQLException {
+        return this.dataSource.getConnection();
     }
 }

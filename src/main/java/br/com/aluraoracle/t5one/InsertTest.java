@@ -7,7 +7,8 @@ import java.sql.Statement;
 
 public class InsertTest {
     public static void main(String[] args) throws SQLException {
-        Connection connection = ConnectionFactory.triggersConnection();
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        Connection connection = connectionFactory.triggersConnection();
         Statement statement = connection.createStatement();
         statement.execute("insert into tbproduct(name, description) values" +
                 "('Microsoft Mouse', 'O mouse leve, portátil e ergonômico é perfeito " +
