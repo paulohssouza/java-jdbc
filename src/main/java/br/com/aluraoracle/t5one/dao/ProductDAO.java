@@ -3,6 +3,8 @@ package br.com.aluraoracle.t5one.dao;
 import br.com.aluraoracle.t5one.model.Product;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDAO {
     private Connection connection;
@@ -22,6 +24,22 @@ public class ProductDAO {
                 while (resultSet.next()) {
                     product.setId(resultSet.getInt(1));
                 }
+            }
+        }
+    }
+
+    public List<Product> productList() throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        String mySql = "select id, name, description from tbproduct";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(mySql)) {
+            preparedStatement.execute();
+            try(ResultSet resultSet = preparedStatement.getResultSet()) {
+                while(resultSet.next()) {
+                    Product product = new Product(resultSet.getInt(1),
+                            resultSet.getNString(2), resultSet.getString(3) );
+                    productList.add(product);
+                }
+                return productList;
             }
         }
     }
