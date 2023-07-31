@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDAO {
-    private Connection connection;
+    private final Connection connection;
     public CategoryDAO(Connection connection) {
         this.connection = connection;
     }
 
-    public List<Category> listing() throws SQLException {
+    public List<Category> list() {
         List<Category> categoryList = new ArrayList<>();
         String mySql = "select id, name from tbcategory";
         try(PreparedStatement preparedStatement = connection.prepareStatement(mySql)) {
@@ -29,6 +29,8 @@ public class CategoryDAO {
                     categoryList.add(category);
                 }
             }
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
         }
         return categoryList;
     }

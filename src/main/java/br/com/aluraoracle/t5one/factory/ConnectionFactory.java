@@ -19,7 +19,11 @@ public class ConnectionFactory {
         comboPooledDataSource.setMaxPoolSize(15);
         this.dataSource = comboPooledDataSource;
     }
-    public Connection triggersConnection() throws SQLException {
-        return this.dataSource.getConnection();
+    public Connection triggersConnection() {
+        try {
+            return this.dataSource.getConnection();
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 }

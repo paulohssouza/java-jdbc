@@ -14,7 +14,7 @@ public class ProductDAO {
         this.connection = connection;
     }
 
-    public void save(Product product) throws SQLException {
+    public void save(Product product) {
         String mySql = "insert into tbproduct(name, description, category_id) values(?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(mySql,
                 Statement.RETURN_GENERATED_KEYS)) {
@@ -27,10 +27,12 @@ public class ProductDAO {
                     product.setId(resultSet.getInt(1));
                 }
             }
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
-    public List<Product> productList() throws SQLException {
+    public List<Product> list() {
         List<Product> productList = new ArrayList<>();
         String mySql = "select id, name, description from tbproduct";
         try(PreparedStatement preparedStatement = connection.prepareStatement(mySql)) {
@@ -43,6 +45,8 @@ public class ProductDAO {
                 }
                 return productList;
             }
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
@@ -57,23 +61,27 @@ public class ProductDAO {
         }
     }
 
-    public void delete(Integer id) throws SQLException {
+    public void delete(Integer id) {
         try(PreparedStatement preparedStatement = connection.prepareStatement(
                 "delete from tbproduct where id = ?"
         )) {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
-    public void update(String name, String description, Integer id) throws SQLException {
+    public void update(String name, String description, Integer id) {
         try(PreparedStatement preparedStatement = connection.prepareStatement(
-                "update tbproduct p set p.name = ?, p.description = p.description where id = ?"
+                "update tbproduct p set p.name = ?, p.description = ? where id = ?"
         )) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, description);
             preparedStatement.setInt(3, id);
             preparedStatement.execute();
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 

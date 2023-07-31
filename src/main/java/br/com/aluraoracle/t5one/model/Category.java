@@ -40,10 +40,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", produtos= " + productList +
-                '}';
+        return this.name;
     }
 }
