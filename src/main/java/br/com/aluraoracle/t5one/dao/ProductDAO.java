@@ -15,11 +15,12 @@ public class ProductDAO {
     }
 
     public void save(Product product) throws SQLException {
-        String mySql = "insert into tbproduct(name, description) values(?, ?)";
+        String mySql = "insert into tbproduct(name, description, category_id) values(?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(mySql,
                 Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setInt(3, product.getCategoryId());
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 while (resultSet.next()) {
@@ -51,13 +52,37 @@ public class ProductDAO {
         try(PreparedStatement preparedStatement = connection.prepareStatement(mySql)) {
             preparedStatement.setInt(1, category.getId());
             preparedStatement.execute();
-            try(ResultSet resultSet = preparedStatement.getResultSet()) {
-                while(resultSet.next()) {
-                    Product product = new Product(resultSet.getInt(1),
-                            resultSet.getNString(2), resultSet.getString(3) );
-                    productList.add(product);
-                }
-                return productList;
+            transformResultsetIntoProduct(preparedStatement, productList);
+            return productList;
+        }
+    }
+
+    public void delete(Integer id) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(
+                "delete from tbproduct where id = ?"
+        )) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        }
+    }
+
+    public void update(String name, String description, Integer id) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(
+                "update tbproduct p set p.name = ?, p.description = p.description where id = ?"
+        )) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, description);
+            preparedStatement.setInt(3, id);
+            preparedStatement.execute();
+        }
+    }
+
+    private static void transformResultsetIntoProduct(PreparedStatement preparedStatement, List<Product> productList) throws SQLException {
+        try(ResultSet resultSet = preparedStatement.getResultSet()) {
+            while(resultSet.next()) {
+                Product product = new Product(resultSet.getInt(1),
+                        resultSet.getNString(2), resultSet.getString(3) );
+                productList.add(product);
             }
         }
     }

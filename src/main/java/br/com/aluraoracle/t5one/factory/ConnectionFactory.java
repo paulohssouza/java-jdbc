@@ -1,4 +1,4 @@
-package br.com.aluraoracle.t5one;
+package br.com.aluraoracle.t5one.factory;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
